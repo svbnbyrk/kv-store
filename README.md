@@ -1,3 +1,3 @@
 # kv-store
 
-kv-store is an in-memory key-value storage REST api.
+kv-store is work like an in-memory key-value store REST api.
