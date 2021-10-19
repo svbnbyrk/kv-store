@@ -56,6 +56,7 @@ func (k Store) Save(l *log.Logger) {
 	}
 	s := fmt.Sprintf("store-%s-data.json", t.Format("2006-01-02 15_04_05"))
 	fp := filepath.Join("tmp", s)
+	
 	// created temp directory if not exist temp directory
 	if _, err := os.Stat("tmp"); os.IsNotExist(err) {
 		os.Mkdir(fp, os.ModePerm)
@@ -76,6 +77,9 @@ func (k Store) Read(l *log.Logger) {
 	    log.Fatal(err)
 	}
 
+	if len(files) == 0{
+		return
+	}
 	// Open our jsonFile
 	jsonFile, err := os.Open("tmp/"+files[0].Name())
 	// if we os.Open returns an error then handle it
