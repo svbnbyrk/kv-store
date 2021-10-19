@@ -1,1 +1,1 @@
-web: cmd/kv-store/kv-store
+web: cmd/kv-store/kv-store.exe
