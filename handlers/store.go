@@ -40,10 +40,13 @@ func (p *Stores) getValue(key string, rw http.ResponseWriter, r *http.Request) {
 	lp := p.kvs.Get(key)
 	if lp == "" {
 		http.Error(rw, "object not found", http.StatusNotFound)
+		return
 	}
-	err := ToJSON(rw, lp)
+	kv := &SetModel{Key:key,Value: lp}
+	err := kv.ToJSON(rw, lp)
 	if err != nil {
 		http.Error(rw, "unable json writer", http.StatusInternalServerError)
+		return
 	}
 }
 
@@ -55,6 +58,7 @@ func (p *Stores) setValue(id string, rw http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(rw, "unable to unmarshal json", http.StatusBadRequest)
+		return
 	}
 
 	p.kvs.Post(kv.Key, kv.Value)
