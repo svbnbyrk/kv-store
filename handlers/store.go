@@ -8,17 +8,17 @@ import (
 	"github.com/svbnbyrk/kv-store/internal"
 )
 
-type Stores struct {
+type Store struct {
 	l   *log.Logger
 	kvs *internal.Store
 }
 
 //dependency injection
-func NewStores(l *log.Logger, kvs *internal.Store) *Stores {
-	return &Stores{l, kvs}
+func NewStore(l *log.Logger, kvs *internal.Store) *Store {
+	return &Store{l, kvs}
 }
 
-func (p *Stores) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+func (p *Store) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		p.l.Println("GET", r.URL.Path)
 		p.getValue(r.URL.Path[strings.LastIndex(r.URL.Path, "/")+1:], rw, r)
@@ -35,14 +35,16 @@ func (p *Stores) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	rw.WriteHeader(http.StatusMethodNotAllowed)
 }
 
-func (p *Stores) getValue(key string, rw http.ResponseWriter, r *http.Request) {
+func (p *Store) getValue(key string, rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET value")
 	lp := p.kvs.Get(key)
 	if lp == "" {
 		http.Error(rw, "object not found", http.StatusNotFound)
 		return
 	}
-	kv := &SetModel{Key:key,Value: lp}
+
+	kv := &SetModel{Key: key, Value: lp}
+
 	err := kv.ToJSON(rw, lp)
 	if err != nil {
 		http.Error(rw, "unable json writer", http.StatusInternalServerError)
@@ -50,7 +52,7 @@ func (p *Stores) getValue(key string, rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (p *Stores) setValue(id string, rw http.ResponseWriter, r *http.Request) {
+func (p *Store) setValue(id string, rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle POST key-value")
 	kv := &SetModel{}
 
@@ -65,6 +67,15 @@ func (p *Stores) setValue(id string, rw http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(rw, "product not found", http.StatusNotFound)
+		return
+	}
+}
+
+func (p *Store) FlushStore(rw http.ResponseWriter, r *http.Request) {
+	p.l.Println("Handle GET flush store")
+	err := p.kvs.Save(p.l)
+	if err != nil {
+		http.Error(rw, "flush failed ", http.StatusInternalServerError)
 		return
 	}
 }

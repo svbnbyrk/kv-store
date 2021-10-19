@@ -17,12 +17,13 @@ func main() {
 	l := log.New(os.Stdout, "kv-store ", log.LstdFlags)
 
 	kvs := internal.NewStore()
-	hp := handlers.NewStores(l, kvs)
+	hp := handlers.NewStore(l, kvs)
 	//read store data in file
 	kvs.Read(l)
 
 	sm := http.NewServeMux()
 	sm.Handle("/", hp)
+	sm.HandleFunc("/flush",hp.FlushStore)
 
 	s := &http.Server{
 		Addr:         ":9090",
@@ -35,7 +36,7 @@ func main() {
 	//hardcoded N time interval
 	go func() {
 		ticker := time.NewTicker(5 * time.Minute)
-		for _ = range ticker.C {
+		for range ticker.C {
 			kvs.Save(l)
 		}
 	}()

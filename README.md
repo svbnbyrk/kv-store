@@ -28,7 +28,7 @@ kv-store is basically REST api that works like a key-value store.
     ```
 
 4. Run container
-   
+
    ```sh
    docker run -d -p 9090 kv-store  
     ```
