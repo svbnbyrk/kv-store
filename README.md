@@ -28,15 +28,12 @@ kv-store is basically REST api that works like a key-value store.
     ```
 
 4. Run container
+   
    ```sh
-
-  docker run -d -p 9090 kv-store  
+   docker run -d -p 9090 kv-store  
     ```
-5. Ready to go!
 
-   ```sh
-     curl -X POST -H "Content-Type application/json" \ -d '{"key":"foo", "value":"bar"}' \ http://localhost:9090
-     ```
+Ready to go!
 
 ## License
 
