@@ -1,0 +1,1 @@
+web: cmd/kv-store/kv-store
