@@ -3,7 +3,6 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/svbnbyrk/kv-store/internal"
 )
@@ -21,23 +20,34 @@ func NewStore(l *log.Logger, kvs *internal.Store) *Store {
 func (p *Store) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		p.l.Println("GET", r.URL.Path)
-		p.getValue(r.URL.Path[strings.LastIndex(r.URL.Path, "/")+1:], rw, r)
+		p.getValue( rw, r)
 		return
 	}
 
 	if r.Method == http.MethodPost {
 		p.l.Println("POST", r.URL.Path)
 
-		p.setValue(r.URL.Path[strings.LastIndex(r.URL.Path, "/")+1:], rw, r)
+		p.setValue( rw, r)
 		return
 	}
 
 	rw.WriteHeader(http.StatusMethodNotAllowed)
 }
 
-func (p *Store) getValue(key string, rw http.ResponseWriter, r *http.Request) {
+func (p *Store) getValue( rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET value")
+	keys, ok := r.URL.Query()["key"]
+    
+	if !ok || len(keys[0]) < 1 {
+		http.Error(rw, "Url Param 'key' is missing", http.StatusNotFound)
+		return
+	}
+ 
+	// Query()["key"] will return an array of items, 
+	// we only want the single item.
+	key := keys[0]
 	lp := p.kvs.Get(key)
+
 	if lp == "" {
 		http.Error(rw, "object not found", http.StatusNotFound)
 		return
@@ -52,7 +62,7 @@ func (p *Store) getValue(key string, rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (p *Store) setValue(id string, rw http.ResponseWriter, r *http.Request) {
+func (p *Store) setValue( rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle POST key-value")
 	kv := &SetModel{}
 

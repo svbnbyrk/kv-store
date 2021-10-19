@@ -23,7 +23,8 @@ func main() {
 
 	sm := http.NewServeMux()
 	sm.Handle("/", hp)
-	sm.HandleFunc("/flush",hp.FlushStore)
+
+	sm.HandleFunc("/flush", hp.FlushStore)
 
 	s := &http.Server{
 		Addr:         ":9090",

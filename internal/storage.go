@@ -57,8 +57,6 @@ func (k Store) Save(l *log.Logger) error {
 
 	fp := createTimeStamp(time.Now())
 
-	os.Mkdir(fp, os.ModePerm)
-
 	err = ioutil.WriteFile(fp, jsonStr, 0644)
 
 	if err != nil {
