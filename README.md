@@ -60,7 +60,7 @@ Ready to go!
 ### Response
 
     HTTP/1.1 200 OK
-   Date: Web, 19 Feb 2021 12:36:30 GMT
+    Date: Web, 19 Feb 2021 12:36:30 GMT
     Status: 201 Created
     Connection: close
     Content-Type: application/json
