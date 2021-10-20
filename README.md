@@ -53,7 +53,7 @@ Ready to go!
 
 ### Post Request
 
-`POST /thing/`
+`POST /`
 
     curl -i -H 'Accept: application/json' -d '{"key":"foo","value":"bar"}' http://localhost:9090
 
@@ -69,7 +69,7 @@ Ready to go!
 
 ### Flush Request
 
-`GET /thing/id`
+`GET /flush`
 
     curl -i -H 'Accept: application/json' http://localhost:7000/flush
 
