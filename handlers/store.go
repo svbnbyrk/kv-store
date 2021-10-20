@@ -55,7 +55,7 @@ func (p *Store) getValue( rw http.ResponseWriter, r *http.Request) {
 
 	kv := &SetModel{Key: key, Value: lp}
 
-	err := kv.ToJSON(rw, lp)
+	err := kv.ToJSON(rw)
 	if err != nil {
 		http.Error(rw, "unable json writer", http.StatusInternalServerError)
 		return

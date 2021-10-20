@@ -16,7 +16,7 @@ func (p *SetModel) FromJSON(r io.Reader) error {
 }
 
 //encoding json 
-func (p *SetModel)ToJSON(w io.Writer, key string) error {
+func (p *SetModel)ToJSON(w io.Writer) error {
 	e := json.NewEncoder(w)
 	return e.Encode(p)
 }
