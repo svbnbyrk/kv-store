@@ -13,7 +13,7 @@ RUN go mod download
 COPY . ./
 
 # Build the binary.
-RUN  go build -o kv-store ./cmd/kv-store/
+RUN  go build -o cmd/kv-store/kv-store ./cmd/kv-store/
 
 # Use the official Debian slim image for a lean production container.
 FROM debian:buster-slim
@@ -22,7 +22,7 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     rm -rf /var/lib/apt/lists/*
 
 # Copy the binary to the production image from the builder stage.
-COPY --from=builder /app/kv-store /app/kv-store
+COPY --from=builder /app/cmd/kv-store/kv-store /app/cmd/kv-store/kv-store
 
 # Run the web service on container startup.
-CMD ["/app/kv-store"]
+CMD ["/app/cmd/kv-store/kv-store"]
