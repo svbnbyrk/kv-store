@@ -53,14 +53,14 @@ Ready to go!
 
 ### Post Request
 
-`POST /thing/`
+`POST /`
 
     curl -i -H 'Accept: application/json' -d '{"key":"foo","value":"bar"}' http://localhost:9090
 
 ### Response
 
     HTTP/1.1 200 OK
-   Date: Web, 19 Feb 2021 12:36:30 GMT
+    Date: Web, 19 Feb 2021 12:36:30 GMT
     Status: 201 Created
     Connection: close
     Content-Type: application/json
@@ -69,9 +69,9 @@ Ready to go!
 
 ### Flush Request
 
-`GET /thing/id`
+`GET /flush`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/flush
+    curl -i -H 'Accept: application/json' http://localhost:9090/flush
 
 ### Response
 
