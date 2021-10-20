@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+//Store is db 
 type Store struct {
 	db map[string]string
 }

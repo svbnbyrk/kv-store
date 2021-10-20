@@ -5,6 +5,7 @@ import (
 	"io"
 )
 
+//SetModel is view model
 type SetModel struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`

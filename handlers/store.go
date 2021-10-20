@@ -7,15 +7,18 @@ import (
 	"github.com/svbnbyrk/kv-store/internal"
 )
 
+//Store handling struct 
 type Store struct {
 	l   *log.Logger
 	kvs *internal.Store
 }
 
+//NewStore is constractor
 func NewStore(l *log.Logger, kvs *internal.Store) *Store {
 	return &Store{l, kvs}
 }
 
+//ServeHTTP serving http request
 func (p *Store) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		p.l.Println("GET", r.URL.Path)
@@ -80,6 +83,7 @@ func (p *Store) setValue( rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//FlushStore is flushing key-value store. Saved tmp directory
 func (p *Store) FlushStore(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET flush store")
 	err := p.kvs.Save(p.l)
