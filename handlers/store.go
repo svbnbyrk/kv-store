@@ -12,7 +12,6 @@ type Store struct {
 	kvs *internal.Store
 }
 
-//dependency injection
 func NewStore(l *log.Logger, kvs *internal.Store) *Store {
 	return &Store{l, kvs}
 }

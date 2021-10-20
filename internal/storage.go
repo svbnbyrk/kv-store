@@ -13,19 +13,24 @@ import (
 type Store struct {
 	db map[string]string
 }
+
+//NewStore is constractor
 func NewStore() *Store {
 	store := &Store{db: map[string]string{}}
 	return store
 }
 
+//Get value
 func (k Store) Get(key string) string {
 	return k.db[key]
 }
 
+//Post is update key-value
 func (k Store) Post(key string, value string) {
 	k.db[key] = value
 }
 
+//Save is saving map to json file
 func (k Store) Save(l *log.Logger) error {
 
 	jsonStr, err := json.Marshal(k.db)
@@ -59,6 +64,7 @@ func (k Store) Save(l *log.Logger) error {
 	return nil
 }
 
+//Read is reading tmp/TIMESTAMP-data.json directory and fill db map
 func (k Store) Read(l *log.Logger) {
 	//tmp folder is creating if not exist
 	if _, err := os.Stat("tmp"); os.IsNotExist(err) {
