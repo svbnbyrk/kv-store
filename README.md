@@ -71,7 +71,7 @@ Ready to go!
 
 `GET /flush`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/flush
+    curl -i -H 'Accept: application/json' http://localhost:9090/flush
 
 ### Response
 
