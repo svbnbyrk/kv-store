@@ -56,7 +56,7 @@ func main() {
 
 	sig := <-sigChan
 
-	l.Println("Recieved terminate, graceful shutdown is beginning", sig)
+	l.Println("Received terminate, graceful shutdown is beginning", sig)
 
 	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
