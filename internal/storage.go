@@ -13,27 +13,21 @@ import (
 type Store struct {
 	db map[string]string
 }
-
-//dependency injection
 func NewStore() *Store {
 	store := &Store{db: map[string]string{}}
 	return store
 }
 
-//get key
 func (k Store) Get(key string) string {
 	return k.db[key]
 }
 
-//update key
 func (k Store) Post(key string, value string) {
 	k.db[key] = value
 }
 
-// save to file
-
 func (k Store) Save(l *log.Logger) error {
-	//get key-value and convert map to json string
+
 	jsonStr, err := json.Marshal(k.db)
 	if err != nil {
 		l.Printf("Error: %s", err)
@@ -46,7 +40,6 @@ func (k Store) Save(l *log.Logger) error {
 		return err
 	}
 
-	// delete last tmp
 	if len(files) > 0 {
 		err := os.Remove("tmp/" + files[0].Name())
 		if err != nil {
@@ -85,7 +78,7 @@ func (k Store) Read(l *log.Logger) {
 	jsonFile, err := os.Open("tmp/" + files[0].Name())
 	// if we os.Open returns an error then handle it
 	if err != nil {
-		fmt.Println(err)
+		l.Println(err)
 		return
 	}
 	l.Println("Successfully Opened users.json")
