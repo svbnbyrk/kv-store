@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-//Store is db 
+//Store is db
 type Store struct {
 	db map[string]string
 }
@@ -29,6 +29,10 @@ func (k Store) Get(key string) string {
 //Post is update key-value
 func (k Store) Post(key string, value string) {
 	k.db[key] = value
+}
+
+func (k Store) Delete() {
+	k.db = make(map[string]string)
 }
 
 //Save is saving map to json file
@@ -77,7 +81,7 @@ func (k Store) Read(l *log.Logger) {
 		log.Fatal(err)
 	}
 
-	//tmp folder is empty 
+	//tmp folder is empty
 	if len(files) == 0 {
 		return
 	}

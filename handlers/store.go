@@ -76,6 +76,7 @@ func (p *Store) setValue( rw http.ResponseWriter, r *http.Request) {
 	}
 
 	p.kvs.Post(kv.Key, kv.Value)
+	rw.WriteHeader(201)
 
 	if err != nil {
 		http.Error(rw, "product not found", http.StatusNotFound)
@@ -85,8 +86,10 @@ func (p *Store) setValue( rw http.ResponseWriter, r *http.Request) {
 
 //FlushStore is flushing key-value store. Saved tmp directory
 func (p *Store) FlushStore(rw http.ResponseWriter, r *http.Request) {
-	p.l.Println("Handle GET flush store")
+	p.l.Println("Handle DELETE flush store")
 	err := p.kvs.Save(p.l)
+	p.kvs.Delete()
+	rw.WriteHeader(204)
 	if err != nil {
 		http.Error(rw, "flush failed ", http.StatusInternalServerError)
 		return
