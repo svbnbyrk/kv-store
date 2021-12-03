@@ -1,4 +1,4 @@
-# kv-store [![Go Report Card] ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/svbnbyrk/kv-store)
+# kv-store ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/svbnbyrk/kv-store)
 
 kv-store is basically REST api that works like a key-value store.
 
