@@ -7,12 +7,14 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
 //Store is db
 type Store struct {
 	db map[string]string
+	sync.Mutex
 }
 
 //NewStore is constractor
@@ -22,23 +24,31 @@ func NewStore() *Store {
 }
 
 //Get value
-func (k Store) Get(key string) string {
-	return k.db[key]
+func (s *Store) Get(key string) string {
+	s.Lock()
+	v:= s.db[key]
+	s.Unlock()
+	return v
+
 }
 
 //Post is update key-value
-func (k Store) Post(key string, value string) {
-	k.db[key] = value
+func (s *Store) Post(key string, value string) {
+	s.Lock()
+	s.db[key] = value
+	s.Unlock()
 }
 
-func (k Store) Delete() {
-	k.db = make(map[string]string)
+func (s *Store) Delete() {
+	s.Lock()
+	s.db = make(map[string]string)
+	s.Unlock()
 }
 
 //Save is saving map to json file
-func (k Store) Save(l *log.Logger) error {
+func (s *Store) Save(l *log.Logger) error {
 
-	jsonStr, err := json.Marshal(k.db)
+	jsonStr, err := json.Marshal(s.db)
 	if err != nil {
 		l.Printf("Error: %s", err)
 		return err
@@ -70,7 +80,7 @@ func (k Store) Save(l *log.Logger) error {
 }
 
 //Read is reading tmp/TIMESTAMP-data.json directory and fill db map
-func (k Store) Read(l *log.Logger) {
+func (s *Store) Read(l *log.Logger) {
 	//tmp folder is creating if not exist
 	if _, err := os.Stat("tmp"); os.IsNotExist(err) {
 		os.Mkdir("tmp", os.ModePerm)
@@ -106,7 +116,9 @@ func (k Store) Read(l *log.Logger) {
 	json.Unmarshal([]byte(byteValue), &result)
 
 	for key, value := range result {
-		k.db[key] = value
+		s.Lock()
+		s.db[key] = value
+		s.Unlock()
 	}
 }
 
