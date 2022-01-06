@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
@@ -16,9 +15,6 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "kv-store ", log.LstdFlags)
-
-	var wg sync.WaitGroup
-	wg.Add(1)
 
 	kvs := internal.NewStore()
 	hp := handlers.NewStore(l, kvs)
@@ -45,11 +41,8 @@ func main() {
 			kvs.Mutex.Lock()
 			kvs.Save(l)
 			kvs.Mutex.Unlock()
-			wg.Done()
 		}
 	}()
-
-	wg.Wait()
 
 	go func() {
 		err := s.ListenAndServe()
